@@ -26,6 +26,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kafka.client.version>2.1.0</kafka.client.version>
         <kafka.streams.version>2.1.0</kafka.streams.version>
+        <kafka.streams.scala.version>2.1.0</kafka.streams.scala.version>
         <log4j.core.version>2.13.3</log4j.core.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.scala.plugin.version>2.15.2</maven.scala.plugin.version>
@@ -49,6 +50,13 @@
             <artifactId>kafka-streams</artifactId>
             <version>${kafka.streams.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams-scala -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams-scala_2.11</artifactId>
+            <version>${kafka.streams.scala.version}</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
