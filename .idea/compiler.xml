@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Apps_Streaming_KafkaStream" />
         <module name="Apps Streaming KafkaStream" />
       </profile>
     </annotationProcessing>
