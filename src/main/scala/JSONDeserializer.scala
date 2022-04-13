@@ -8,7 +8,7 @@ import org.apache.kafka.common.serialization.Deserializer
 import scala.reflect.{ClassTag, classTag}
 import java.util
 
-class JSONDeserializer[T : ClassTag] extends Deserializer[T]{
+class JSONDeserializer[T] extends Deserializer[T]{
 
   val objetMapper : ObjectMapper = new ObjectMapper()
   objetMapper.registerModule(DefaultScalaModule)
@@ -26,7 +26,7 @@ class JSONDeserializer[T : ClassTag] extends Deserializer[T]{
     //case null => null
     //case _ =>
     try {
-      objetMapper.readValue(bytes, classTag[T].runtimeClass.asInstanceOf[Class[T]])
+      objetMapper.readValue(bytes, classOf[T])
     } catch {
       case e : Exception => throw new Exception(s"Erreur dans la désérialisation du message ${bytes}. \n le détails est : ${e}")
     }
