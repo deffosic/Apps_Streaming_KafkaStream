@@ -35,6 +35,7 @@
         <junit.version>4.11</junit.version>
         <jackson.databind.version>2.6.7.3</jackson.databind.version>
         <jackson.module.scala.version>2.10.0</jackson.module.scala.version>
+        <avro.version>1.10.1</avro.version>
 
     </properties>
 
@@ -90,8 +91,18 @@
             <artifactId>jackson-module-scala_2.11</artifactId>
             <version>${jackson.module.scala.version}</version>
         </dependency>
+        <!--  Dependence  Avro -->
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
 
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-avro</artifactId>
+            <version>2.8.5</version>
+        </dependency>
 
 
 
@@ -139,6 +150,32 @@
                 </executions>
                 <configuration>
                     <scalaVersion>${scala.version}</scalaVersion>
+                </configuration>
+            </plugin>
+            <!-- Avro schema to POJO -->
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>1.10.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${project.basedir}/src/main/resources/schemas/</sourceDirectory>
+                            <outputDirectory>${project.basedir}/src/main/scala/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 

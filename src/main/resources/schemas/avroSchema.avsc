@@ -1,0 +1,60 @@
+{
+  "name": "Commandes",
+  "type": "record",
+  "namespace": "schema.avro",
+  "fields": [
+    {
+      "name": "factureId",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "productName",
+      "type": ["null", "string"]
+    },
+    {
+      "name": "quantite",
+      "type": "int"
+    },
+    {
+      "name": "total",
+      "type": "double"
+    },
+    {
+      "name": "orderLine",
+      "type": {
+        "name": "orderLine",
+        "type": "record",
+        "fields": [
+          {
+            "name": "orderLineId",
+            "type": ["null", "string"]
+          },
+          {
+            "name": "productId",
+            "type": ["null", "string"]
+          },
+          {
+            "name": "billDate",
+            "type": "string"
+          },
+          {
+            "name": "shipdate",
+            "type": ["null", "string"]
+          },
+          {
+            "name": "unitPrice",
+            "type": "double"
+          },
+          {
+            "name": "totalPrice",
+            "type": "double"
+          },
+          {
+            "name": "numUnits",
+            "type": "int"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -45,5 +45,19 @@ object TestSerDes extends App{
   val facture2 = oist.readObject().asInstanceOf[Facture]
 
   println(facture2)
+/*
+  import org.apache.avro.Schema
+  val schema_json ="{\n  \"name\": \"Commandes\",\n  \"type\": \"record\",\n  \"namespace\": \"schema.avro\",\n  \"fields\": [\n    {\n      \"name\": \"factureId\",\n      \"type\": [\"null\", \"string\"]\n    },\n    {\n      \"name\": \"productName\",\n      \"type\": [\"null\", \"string\"]\n    },\n    {\n      \"name\": \"quantite\",\n      \"type\": \"int\"\n    },\n    {\n      \"name\": \"total\",\n      \"type\": \"double\"\n    },\n    {\n      \"name\": \"orderLine\",\n      \"type\": {\n        \"name\": \"orderLine\",\n        \"type\": \"record\",\n        \"fields\": [\n          {\n            \"name\": \"orderLineId\",\n            \"type\": [\"null\", \"string\"]\n          },\n          {\n            \"name\": \"productId\",\n            \"type\": [\"null\", \"string\"]\n          },\n          {\n            \"name\": \"billDate\",\n            \"type\": \"string\"\n          },\n          {\n            \"name\": \"shipdate\",\n            \"type\": [\"null\", \"string\"]\n          },\n          {\n            \"name\": \"unitPrice\",\n            \"type\": \"double\"\n          },\n          {\n            \"name\": \"totalPrice\",\n            \"type\": \"double\"\n          },\n          {\n            \"name\": \"numUnits\",\n            \"type\": \"int\"\n          }\n        ]\n      }\n    }\n  ]\n}"
+
+  val raw = new Schema.Parser().setValidate(true).parse(schema_json)
+  val schema = new Nothing(raw)
+
+  import com.fasterxml.jackson.dataformat.avro.AvroMapper
+
+  val mapper = new AvroMapper
+  mapper.
+  mapper
+  val avroData = mapper.writer(schema).writeValueAsBytes(facture1)
+  val empl = mapper.reader(classOf[Facture]).`with`(schema).readValue(avroData) */
 
 }
