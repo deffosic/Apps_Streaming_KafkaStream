@@ -21,6 +21,15 @@ object CustomSerdesUsage extends App {
   implicit val bytesSerder1 = new JSONSerDes[Facture]
   implicit val bytesOrderSerdes1 = new JSONSerDes[OrderLine]
 
+  // Deuxième utilisation d'un serdes
+  // En JSON
+  implicit val factureSerdesJSON : Serde[Facture] = Serdes.serdeFrom[Facture](new JSONSerializer[Facture] , new JSONDeserializer[Facture])
+  // En Byte
+  implicit val factureSerdesBYTE : Serde[Facture] = Serdes.serdeFrom[Facture](new BytesSerializer[Facture] , new BytesDeserializer[Facture])
+
+  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(Serdes.String(), factureSerdesJSON)
+  implicit val produced : Produced[String, Facture] = Produced.`with`(Serdes.String(), factureSerdesJSON)
+
 
   val str : StreamsBuilder = new StreamsBuilder
   val kstr : KStream[String, Facture] = str.stream[String, Facture]("streams_app")
