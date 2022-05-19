@@ -11,9 +11,12 @@ import java.util.Properties
 
 object BranchMergeProcessors extends App {
 
+  import org.apache.kafka.streams.scala.ImplicitConversions._
+  import org.apache.kafka.streams.scala.Serdes._
+
   implicit val jsonSerdes : Serde[Facture] = Serdes.serdeFrom[Facture](new JSONSerializer[Facture], new JSONDeserializer)
-  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(Serdes.String(), jsonSerdes)
-  implicit val producer : Produced[String, Facture] = Produced.`with`(Serdes.String(), jsonSerdes)
+  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(String, jsonSerdes)
+  implicit val producer : Produced[String, Facture] = Produced.`with`(String, jsonSerdes)
 
   val props : Properties = new Properties()
   props.put(StreamsConfig.APPLICATION_ID_CONFIG,"action-processor")

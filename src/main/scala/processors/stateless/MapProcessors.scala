@@ -1,6 +1,7 @@
 package processors.stateless
 
 import org.apache.kafka.common.serialization.{Serde, Serdes}
+import org.apache.kafka.streams.kstream.Printed
 import org.apache.kafka.streams.{KafkaStreams, StreamsConfig, Topology}
 import org.apache.kafka.streams.scala.StreamsBuilder
 import org.apache.kafka.streams.scala.kstream.{Consumed, KStream, Produced}
@@ -11,9 +12,12 @@ import java.util.Properties
 
 object MapProcessors extends App {
 
+  import org.apache.kafka.streams.scala.ImplicitConversions._
+  import org.apache.kafka.streams.scala.Serdes._
+
   implicit val jsonSerdes : Serde[Facture] = Serdes.serdeFrom[Facture](new JSONSerializer[Facture], new JSONDeserializer)
-  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(Serdes.String(), jsonSerdes)
-  implicit val producer : Produced[String, Facture] = Produced.`with`(Serdes.String(), jsonSerdes)
+  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(String, jsonSerdes)
+  implicit val producer : Produced[String, Facture] = Produced.`with`(String, jsonSerdes)
 
   val props : Properties = new Properties()
   props.put(StreamsConfig.APPLICATION_ID_CONFIG,"map-processor")
@@ -28,6 +32,10 @@ object MapProcessors extends App {
   val kstrTotal : KStream[String, Double] = kStrFacture.mapValues(f => f.orderLine.numUnits * f.orderLine.unitPrice)
   // Utilisation du map
   val kstrTotal2 : KStream[String, Double] = kStrFacture.map((k,f) => (k.substring(2), f.orderLine.numUnits * f.orderLine.unitPrice))
+
+  kstrTotal.print(Printed.toSysOut().withLabel("Total MapValue"))
+  kstrTotal2.print(Printed.toSysOut().withLabel("Total Map"))
+
 
 
 

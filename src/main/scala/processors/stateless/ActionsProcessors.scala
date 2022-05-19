@@ -8,13 +8,17 @@ import org.apache.kafka.streams.scala.kstream.{Consumed, KStream, Produced}
 import schema.Facture
 import serdes.{JSONDeserializer, JSONSerializer}
 
+import java.util
 import java.util.Properties
 
 object ActionsProcessors extends App {
 
+  import org.apache.kafka.streams.scala.ImplicitConversions._
+  import org.apache.kafka.streams.scala.Serdes._
+
   implicit val jsonSerdes : Serde[Facture] = Serdes.serdeFrom[Facture](new JSONSerializer[Facture], new JSONDeserializer)
-  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(Serdes.String(), jsonSerdes)
-  implicit val producer : Produced[String, Facture] = Produced.`with`(Serdes.String(), jsonSerdes)
+  implicit val consumed : Consumed[String, Facture] = Consumed.`with`(String, jsonSerdes)
+  implicit val producer : Produced[String, Facture] = Produced.`with`(String, jsonSerdes)
 
   val props : Properties = new Properties()
   props.put(StreamsConfig.APPLICATION_ID_CONFIG,"action-processor")
@@ -27,7 +31,7 @@ object ActionsProcessors extends App {
   // Traitement
   val kstrProducts : KStream[String, Array[String]] = kStrFacture.flatMapValues(f => List(f.productName.split(" ")))
 
-  val kstrTotal : KStream[String, Array[Double]] = kStrFacture.flatMapValues(f => List(f.orderLine.numUnits * f.orderLine.unitPrice, f.orderLine.numUnits, f.orderLine.unitPrice))
+  val kstrTotal : KStream[String, Double] = kStrFacture.flatMapValues(f => List(f.orderLine.numUnits * f.orderLine.unitPrice, f.orderLine.numUnits, f.orderLine.unitPrice))
 
   val kstrTotal2 : KStream[String, Double] = kStrFacture.flatMap(
     (k,f) => List(
